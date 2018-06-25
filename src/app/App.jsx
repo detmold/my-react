@@ -1,14 +1,23 @@
 import * as React from "react"
 import { connect } from "react-redux"
-import { fetchContacts } from './actions'
+import { fetchContacts, sortContacts } from './actions'
 import { ContactsList } from './components/ContactsList'
 import { AppHeader } from './components/AppHeader'
 import { ContactsCounterContainer } from './ContactsCounter'
 
 export class App extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.sortContacts = this.sortContacts.bind(this);
+  }
+
   componentDidMount() {
     this.props.fetchContacts()
+  }
+
+  sortContacts(method, field, contacts) {
+    this.props.sortContacts(method, field, contacts)
   }
 
   render() {
@@ -21,7 +30,7 @@ export class App extends React.Component {
               <ContactsCounterContainer perpage={this.props.perpage} />
             </div>
           </form>
-          <ContactsList perpage={this.props.perpage} contacts={this.props.contacts} /> {/* (2) */}
+          <ContactsList perpage={this.props.perpage} onSort={this.sortContacts} contacts={this.props.contacts} /> {/* (2) */}
         </main>
       </div>
     )
@@ -35,6 +44,9 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchFromProps = { fetchContacts }
+const mapDispatchFromProps = { 
+  fetchContacts, 
+  sortContacts 
+}
 
 export const AppContainer = connect(mapStateToProps, mapDispatchFromProps)(App)

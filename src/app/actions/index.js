@@ -20,6 +20,18 @@ export const changePaginationCounter = perpage => ({
     perpage
 })
 
+export const sortContacts = (method, field, contacts) => ({
+    type: 'SORT_CONTACTS',
+    method,
+    field,
+    contacts
+})
+    
+export const sortHandle = (method, field) => (dispatch, getState) => {
+    dispatch(sortContacts(method, field, getState().contacts))
+    dispatch(contactsFetched(getState().contacts))
+}
+
 export const handlePagination = perpage => dispatch => {
     dispatch(changePaginationCounter(perpage))
     dispatch(fetchContacts())
