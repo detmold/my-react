@@ -2,6 +2,7 @@ import * as React from "react"
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import Bootstrap from 'bootstrap/dist/css/bootstrap.css'
+import Styles from '../app/style.css'
 import { AppContainer } from '../app/App'
 import { store } from '../app/store'
 

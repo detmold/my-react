@@ -7,7 +7,7 @@ export const fetchContacts = () => (dispatch, getState) => {
     fetch('https://randomuser.me/api/?format=json&results='+encodeURIComponent(getState().counter))
         .then(res => res.json())
         .then(json => dispatch(contactsFetched(json.results)))
-        .then(() => console.log(getState().contacts, getState().counter))
+        .then(() => console.log(getState().contacts, getState().perpage, getState().counter))
 }
 
 export const changeCounter = counter => ({
@@ -15,7 +15,22 @@ export const changeCounter = counter => ({
     counter
 })
 
+export const changePaginationCounter = perpage => ({
+    type: 'CHANGE_PAGINATION_COUNTER',
+    perpage
+})
+
+export const handlePagination = perpage => dispatch => {
+    dispatch(changePaginationCounter(perpage))
+    dispatch(fetchContacts())
+}
+
 export const changeCounterAndFetch = counter => dispatch => {
-    disaptch(changeCounter(counter))
+    dispatch(changeCounter(counter))
+    dispatch(fetchContacts())
+}
+
+export const changePaginationAndFetch = perpage => dispatch => {
+    dispatch(handlePagination(perpage))
     dispatch(fetchContacts())
 }
