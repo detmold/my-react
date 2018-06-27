@@ -4,6 +4,7 @@ import { fetchContacts, sortContacts } from './actions'
 import { ContactsList } from './components/ContactsList'
 import { AppHeader } from './components/AppHeader'
 import { ContactsCounterContainer } from './ContactsCounter'
+import { getFilteredContacts } from "./selectors/getFilteredContacts";
 
 export class App extends React.Component {
 
@@ -39,7 +40,8 @@ export class App extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    contacts: state.contacts,
+    //filter works on immutable state and return filtered results to ContactsList component which use this prop
+    contacts: getFilteredContacts(state.contacts, state.contactsSearch),
     perpage: Math.abs(state.paginationCounter) //this must name the same as exported in combineReducers
   }
 }

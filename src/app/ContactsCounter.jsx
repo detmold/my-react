@@ -1,11 +1,12 @@
 import * as React from "react"
 import { connect } from "react-redux"
-import { changeCounter, changeCounterAndFetch, changePaginationAndFetch, handlePagination  } from "./actions"
+import { changeCounter, changeCounterAndFetch, changePaginationAndFetch, handlePagination, searchContacts  } from "./actions"
 import PropTypes from 'prop-types'
 import { Button } from 'react-bootstrap';
 
 class ContactsCounter extends React.Component {
 
+  //TODO move render html to dumb components
   render() {
     return (
         <div>
@@ -17,6 +18,17 @@ class ContactsCounter extends React.Component {
             <div className="field">
                 <input type="number" min="1" value={this.props.perpage} onChange={this.handlePagination} />
                 <Button bsStyle="success" onClick={this.handlePerPageChange}>Ustaw licznik paginacji</Button>
+            </div>
+            <div className="field">
+              <div className="ui icon fluid input">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  value={this.props.contactsSearch}
+                  onChange={this.handleSearchChange}
+                />
+                <i className="search icon" />
+              </div>
             </div>
         </div>
     )
@@ -37,18 +49,24 @@ class ContactsCounter extends React.Component {
   handlePagination = e => {
     this.props.handlePagination(Number(e.currentTarget.value))
   }
+
+  handleSearchChange = e => {
+    this.props.searchContacts(e.currentTarget.value);
+  }
 }
 
 const mapStateToProps = state => {
   return {
-    counter: state.counter
+    counter: state.counter,
+    contactsSearch: state.contactsSearch
   }
 }
 const mapDispatchToProps = { 
     changeCounter,
     changeCounterAndFetch,
     handlePagination,
-    changePaginationAndFetch
+    changePaginationAndFetch,
+    searchContacts
 }
 
 export const ContactsCounterContainer = connect(mapStateToProps, mapDispatchToProps)(

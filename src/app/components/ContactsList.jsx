@@ -23,8 +23,12 @@ export class ContactsList extends React.Component {
     const perPage = this.props.perpage;
     const total = newProps.contacts.length;
     const contacts = newProps.contacts;
-    const currentPage = Math.ceil(total / perPage) < this.state.currentPage ? Math.ceil(total / perPage) : this.state.currentPage;
-    const renderedUsers = newProps.contacts.slice((currentPage - 1) * perPage, (currentPage - 1) * perPage + perPage);
+    let renderedUsers = []
+    const currentPage = (Math.ceil(total / perPage) < this.state.currentPage) && (total !== 0) ? Math.ceil(total / perPage) : this.state.currentPage;
+    if (total <= perPage) {
+      renderedUsers = contacts
+    }
+    else renderedUsers = newProps.contacts.slice((currentPage - 1) * perPage, (currentPage - 1) * perPage + perPage);
     this.setState({ currentPage, renderedUsers, total, contacts });
   }
 
@@ -55,7 +59,7 @@ export class ContactsList extends React.Component {
     if (this.state.reverseSort) {
       indexAttr = this.state.total - (curPage * perPage) + perPage - index - 1;
     }
-    return <ContactItem key={key} indexAttr={indexAttr} avatarUrl={avatarUrl} name={name} phone={phone} />;
+    return <ContactItem key={key + indexAttr} indexAttr={indexAttr} avatarUrl={avatarUrl} name={name} phone={phone} />;
   };
 
   render() {

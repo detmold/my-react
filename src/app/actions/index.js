@@ -26,7 +26,12 @@ export const sortContacts = (method, field, contacts) => ({
     field,
     contacts
 })
-    
+
+export const searchContacts = text => ({
+    type: "SEARCH_CONTACTS",
+    text
+})
+
 export const sortHandle = (method, field) => (dispatch, getState) => {
     dispatch(sortContacts(method, field, getState().contacts))
     dispatch(contactsFetched(getState().contacts))
